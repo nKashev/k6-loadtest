@@ -2,22 +2,22 @@ import http from 'k6/http';
 import { check, sleep, group } from 'k6';
 import { Rate } from 'k6/metrics';
 
-// ── Конфигурация ──────────────────────────────────────────────
-// Подай BASE през CLI:  k6 run -e BASE=https://staging.твойсайт.pro loadtest.js
+// Configuration 
+// Enter BASE via the CLI:  k6 run -e BASE=$website loadtest.js
 const BASE = __ENV.BASE || 'https://staging.example.pro';
 
 const errorRate = new Rate('errors');
 
-// ── Сценарии: пускай ЕДИН по избор (закоментирай останалите) ──
+// Scenarios: Select ONE (comment out the rest)
 export const options = {
-  // 1) LOAD TEST — реалистичен очакван трафик (за капацитет/кампания)
+  // 1) LOAD TEST - realistic expected traffic (by capacity/campaign)
   stages: [
     { duration: '2m', target: 20 },   // плавно покачване до 20 VU
     { duration: '5m', target: 20 },   // задържане (steady state)
     { duration: '2m', target: 0 },    // плавно сваляне
   ],
 
-  // 2) STRESS TEST — само срещу staging! Постепенно до счупване:
+  // 2) STRESS TEST - only against staging! Gradually until it breaks:
   // stages: [
   //   { duration: '2m', target: 50 },
   //   { duration: '2m', target: 100 },
@@ -26,27 +26,27 @@ export const options = {
   //   { duration: '2m', target: 0 },
   // ],
 
-  // 3) SPIKE TEST — внезапен пик (Instagram кампания, viral пост):
+  // 3) SPIKE TEST - sudden spike (Instagram campaign, viral post):
   // stages: [
   //   { duration: '10s', target: 5 },
-  //   { duration: '1m',  target: 300 },  // рязък скок
+  //   { duration: '1m',  target: 300 },  // sharp increase
   //   { duration: '3m',  target: 300 },
   //   { duration: '1m',  target: 0 },
   // ],
 
   thresholds: {
     http_req_duration: ['p(95)<800', 'p(99)<2000'], // 95% < 800ms
-    errors: ['rate<0.01'],                            // < 1% грешки
+    errors: ['rate<0.01'],                            // < 1% errors
     http_req_failed: ['rate<0.02'],
   },
 
-  // Уважавай хостинга — не пали хиляди заявки моментално
+  // Be considerate of your hosting provider - don't flood the server with thousands of requests all at once
   // maxRedirects: 4,
 };
 
-// ── Реалистичен потребителски поток ──────────────────────────
+// Realistic User Flow
 export default function () {
-  group('Начална страница', () => {
+  group('Home Page', () => {
     const res = http.get(`${BASE}/`, {
       headers: { 'User-Agent': 'k6-loadtest (own-site testing)' },
     });
@@ -56,16 +56,16 @@ export default function () {
     }) || errorRate.add(1);
   });
 
-  sleep(Math.random() * 3 + 1); // think time 1–4s (имитира реален потребител)
+  sleep(Math.random() * 3 + 1); // think time 1–4s (imitates a real user)
 
-  group('Страница на курс/продукт', () => {
-    const res = http.get(`${BASE}/pro-pilates/`);
+  group('Course/Product Page/Blog', () => {
+    const res = http.get(`${BASE}/blog/`);
     check(res, { 'status 200': (r) => r.status === 200 }) || errorRate.add(1);
   });
 
   sleep(Math.random() * 3 + 2);
 
-  // ВНИМАНИЕ: НЕ автоматизирай реални POST към LatePoint booking-а
-  // срещу production — ще създаде боклук в базата. Само на staging.
+  // WARNING: DO NOT automate actual POST requests to the LatePoint booking system
+  // vs. production - will create junk in the database. Only on staging.
   // group('Booking flow', () => { ... http.post ... });
 }
