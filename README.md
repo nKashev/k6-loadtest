@@ -1,6 +1,8 @@
-# k6-loadtest/
+# k6-loadtest
+
+k6-loadtest/
 ├── .github/
 │   └── workflows/
-│       └── k6-loadtest.yml   ← качи това
+│       └── k6-loadtest.yml
 └── tests/
-    └── loadtest.js           ← качи това тук
+    └── loadtest.js
