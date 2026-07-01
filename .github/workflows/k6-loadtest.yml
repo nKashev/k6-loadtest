@@ -9,7 +9,7 @@ on:
         required: true
         default: 'https://staging.reformeracademy.pro/'
       scenario:
-        description: 'Script'
+        description: 'Scenario'
         required: true
         default: 'load'
         type: choice
@@ -43,7 +43,7 @@ jobs:
 
       - name: Run k6
         env:
-          BASE: ${{ github.event.inputs.base_url || 'https://staging.твойсайт.pro' }}
+          BASE: ${{ github.event.inputs.base_url || 'https://staging.reformeracademy.pro' }}
           SCENARIO: ${{ github.event.inputs.scenario || 'load' }}
         run: |
           k6 run \
@@ -107,7 +107,7 @@ jobs:
           </head>
           <body>
             <h1>k6 Load Test Report</h1>
-            <p class='meta'>Generated: \${new Date().toLocaleString('bg-BG')} | URL: \${process.env.BASE} | Сценарий: \${process.env.SCENARIO}</p>
+            <p class='meta'>Generated: \${new Date().toLocaleString('bg-BG')} | URL: \${process.env.BASE} | Scenario: \${process.env.SCENARIO}</p>
             <div class='grid'>
               <div class='card'>
                 <div class='label'>Avg Response Time</div>
