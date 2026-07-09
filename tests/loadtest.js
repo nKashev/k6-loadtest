@@ -4,7 +4,7 @@ import { Rate } from 'k6/metrics';
 
 // Configuration 
 // Enter BASE via the CLI:  k6 run -e BASE=$website loadtest.js
-const BASE = __ENV.BASE || 'https://staging.example.pro';
+const BASE = __ENV.BASE || 'https://staging.reformeracademy.pro/';
 
 const errorRate = new Rate('errors');
 
@@ -20,17 +20,17 @@ export const options = {
   // 2) STRESS TEST - only against staging! Gradually until it breaks:
   // stages: [
   //   { duration: '2m', target: 50 },
+  //   { duration: '2m', target: 70 },
   //   { duration: '2m', target: 100 },
-  //   { duration: '2m', target: 200 },
-  //   { duration: '2m', target: 300 },
+  //   { duration: '2m', target: 120 },
   //   { duration: '2m', target: 0 },
   // ],
 
   // 3) SPIKE TEST - sudden spike (Instagram campaign, viral post):
   // stages: [
   //   { duration: '10s', target: 5 },
-  //   { duration: '1m',  target: 300 },  // sharp increase
-  //   { duration: '3m',  target: 300 },
+  //   { duration: '1m',  target: 100 },  // sharp increase
+  //   { duration: '3m',  target: 200 },
   //   { duration: '1m',  target: 0 },
   // ],
 
