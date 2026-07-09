@@ -11,20 +11,20 @@ const errorRate = new Rate('errors');
 // Scenarios: Select ONE (comment out the rest)
 export const options = {
   // 1) LOAD TEST - realistic expected traffic (by capacity/campaign)
-  stages: [
-    { duration: '2m', target: 20 },   // плавно покачване до 20 VU
-    { duration: '5m', target: 20 },   // задържане (steady state)
-    { duration: '2m', target: 0 },    // плавно сваляне
-  ],
+  // stages: [
+  //   { duration: '2m', target: 20 },   // плавно покачване до 20 VU
+  //   { duration: '5m', target: 20 },   // задържане (steady state)
+  //   { duration: '2m', target: 0 },    // плавно сваляне
+  // ],
 
   // 2) STRESS TEST - only against staging! Gradually until it breaks:
-  // stages: [
-  //   { duration: '2m', target: 50 },
-  //   { duration: '2m', target: 70 },
-  //   { duration: '2m', target: 100 },
-  //   { duration: '2m', target: 120 },
-  //   { duration: '2m', target: 0 },
-  // ],
+  stages: [
+    { duration: '2m', target: 50 },
+    { duration: '2m', target: 70 },
+    { duration: '2m', target: 100 },
+    { duration: '2m', target: 120 },
+    { duration: '2m', target: 0 },
+  ],
 
   // 3) SPIKE TEST - sudden spike (Instagram campaign, viral post):
   // stages: [
