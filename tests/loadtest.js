@@ -4,7 +4,8 @@ import { Rate } from 'k6/metrics';
 
 // Configuration 
 // Enter BASE via the CLI:  k6 run -e BASE=$website loadtest.js
-const BASE = __ENV.BASE || 'https://staging.reformeracademy.pro/';
+// const BASE = __ENV.BASE || 'https://staging.reformeracademy.pro/';
+const BASE = __ENV.BASE || 'https://lifehacksoftware.com/';
 
 const errorRate = new Rate('errors');
 
